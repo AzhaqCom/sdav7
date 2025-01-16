@@ -148,7 +148,7 @@ export function GameInterface() {
   return (
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-        <h1 className="text-2xl font-bold mb-6 dark:text-white">Army Builder</h1>
+        <h1 className="text-2xl font-bold mb-6 dark:text-white">Go jouer !</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ArmySelector
