@@ -50,26 +50,26 @@ export function UpgradeInput({ upgradeTypes, onAdd, name, setName, typeId, setTy
     return (
         <div className="space-y-4">
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 dark:text-white">
                     Nom de l'amélioration
                 </label>
                 <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                 
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
+                 placeholder="upgrade name"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 dark:text-white">
                     Type d'amélioration
                 </label>
                 <select
                     value={typeId}
                     onChange={(e) => setTypeId(Number(e.target.value))}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
                     
                 >
                     <option value="">Sélectionnez un type...</option>
@@ -82,14 +82,14 @@ export function UpgradeInput({ upgradeTypes, onAdd, name, setName, typeId, setTy
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 dark:text-white">
                     Points
                 </label>
                 <input
                     type="number"
                     value={points}
                     onChange={(e) => setPoints(Number(e.target.value))}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
                     min="0"
                   
                 />

@@ -4,6 +4,7 @@ import { Army, UpgradeType } from '@/types';
 import { Stats } from '@/types/gameStats';
 import { StatsInput } from './FigurineForm/StatsInput';
 import { UpgradeInput } from './FigurineForm/UpgradeInput';
+import {Trash } from 'lucide-react';
 
 interface HeroicAction {
   id: number;
@@ -181,18 +182,18 @@ export function FigurineForm() {
       name: '',
       points: '',
       stats: {
-        movement: 0,
-        combat: 0,
-        toughness: '0+',
-        fight: 0,
-        defense: 0,
-        attacks: 0,
-        bravery: '0+',
-        injury: '0+',
-        power: 0,
-        vitality: 0,
-        destiny: 0,
-        life: 0
+        movement: 6,
+        combat: 4,
+        toughness: '4+',
+        fight: 3,
+        defense: 4,
+        attacks: 2,
+        bravery: '6+',
+        injury: '6+',
+        power: 2,
+        vitality: 1,
+        destiny: 1,
+        life: 2
       },
       equipment: [],
       heroicActions: [],
@@ -206,14 +207,14 @@ export function FigurineForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Existing form fields */}
       <div>
-        <label htmlFor="army" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="army" className="block text-sm font-medium text-gray-700 dark:text-white">
           Army
         </label>
         <select
           id="army"
           value={formData.army_id}
           onChange={(e) => setFormData(prev => ({ ...prev, army_id: e.target.value }))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
           required
         >
           <option value="">Select an army...</option>
@@ -228,7 +229,7 @@ export function FigurineForm() {
 
 
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-white">
           Figurine Name
         </label>
         <input
@@ -236,13 +237,13 @@ export function FigurineForm() {
           id="name"
           value={formData.name}
           onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
           required
         />
       </div>
 
       <div>
-        <label htmlFor="points" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="points" className="block text-sm font-medium text-gray-700 dark:text-white ">
           Points
         </label>
         <input
@@ -250,7 +251,7 @@ export function FigurineForm() {
           id="points"
           value={formData.points}
           onChange={(e) => setFormData(prev => ({ ...prev, points: e.target.value }))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
           required
           min="0"
         />
@@ -261,10 +262,10 @@ export function FigurineForm() {
         onChange={(stats) => setFormData(prev => ({ ...prev, stats }))}
       />
       <div>
-        <h3 className="text-lg font-medium">Actions héroïques</h3>
+        <h3 className="text-lg font-medium mb-4 dark:text-white text-gray-700">Actions héroïques</h3>
         <ul className="list-none space-y-2">
           {actions.map((action) => (
-            <li key={action.id} className="flex items-center space-x-2">
+            <li key={action.id} className="flex items-center space-x-2 ">
               <input
                 type="checkbox"
                 id={`action-${action.id}`}
@@ -286,7 +287,7 @@ export function FigurineForm() {
                 }}
                 className="w-4 h-4"
               />
-              <label htmlFor={`action-${action.id}`} className="cursor-pointer">
+              <label htmlFor={`action-${action.id}`} className="cursor-pointer dark:text-white text-gray-700">
                 <strong>{action.nom}</strong>
               </label>
             </li>
@@ -296,11 +297,11 @@ export function FigurineForm() {
       {/* Equipment section */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-medium">Equipment</h3>
+          <h3 className="text-lg font-medium mb-4 dark:text-white text-gray-700">Equipment</h3>
           <button
             type="button"
             onClick={addEquipment}
-            className="text-sm text-blue-600 hover:text-blue-800"
+            className="text-sm text-blue-600 hover:text-blue-800 dark:text-white"
           >
             Add Equipment
           </button>
@@ -315,7 +316,7 @@ export function FigurineForm() {
                 newEquipment[index] = { ...equipment, name: e.target.value };
                 setFormData(prev => ({ ...prev, equipment: newEquipment }));
               }}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
               placeholder="Equipment name"
             />
             <textarea
@@ -325,7 +326,7 @@ export function FigurineForm() {
                 newEquipment[index] = { ...equipment, description: e.target.value };
                 setFormData(prev => ({ ...prev, equipment: newEquipment }));
               }}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
               placeholder="Equipment description"
               rows={3}
             />
@@ -336,11 +337,11 @@ export function FigurineForm() {
       {/* Special Rules section */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-medium">Special Rules</h3>
+          <h3 className="text-lg font-medium mb-4 dark:text-white text-gray-700">Special Rules</h3>
           <button
             type="button"
             onClick={addSpecialRule}
-            className="text-sm text-blue-600 hover:text-blue-800"
+            className="text-sm text-blue-600 hover:text-blue-800 dark:text-white"
           >
             Add Special Rule
           </button>
@@ -355,7 +356,7 @@ export function FigurineForm() {
                 newRules[index] = { ...rule, name: e.target.value };
                 setFormData(prev => ({ ...prev, specialRules: newRules }));
               }}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
               placeholder="Rule name"
             />
             <textarea
@@ -365,7 +366,7 @@ export function FigurineForm() {
                 newRules[index] = { ...rule, description: e.target.value };
                 setFormData(prev => ({ ...prev, specialRules: newRules }));
               }}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
               placeholder="Rule description"
               rows={3}
             />
@@ -380,7 +381,7 @@ export function FigurineForm() {
                 }}
                 className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
               />
-              <span className="text-sm text-gray-700">Active</span>
+              <span className="text-sm text-gray-700 dark:text-white">Active</span>
             </label>
           </div>
         ))}
@@ -388,7 +389,7 @@ export function FigurineForm() {
 
       {/* Upgrades section */}
       <div className="space-y-4">
-        <h3 className="text-lg font-medium">Upgrades</h3>
+        <h3 className="text-lg font-medium mb-4 dark:text-white text-gray-700">Upgrades</h3>
         <UpgradeInput
           upgradeTypes={upgradeTypes}
           onAdd={handleAddUpgrade}
@@ -405,10 +406,10 @@ export function FigurineForm() {
         />
         {formData.upgrades.length > 0 && (
           <div className="mt-4">
-            <h4 className="text-sm font-medium text-gray-700 mb-2">Added Upgrades</h4>
+            <h4 className="text-sm font-medium text-gray-700 mb-2 dark:text-white">Added Upgrades</h4>
             <ul className="space-y-2">
               {formData.upgrades.map((upgrade, index) => (
-                <li key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                <li key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded dark:text-white dark:bg-gray-700">
                   <span>{upgrade.name} ({upgrade.points} pts)</span>
                   <button
                     type="button"
@@ -420,7 +421,7 @@ export function FigurineForm() {
                     }}
                     className="text-red-600 hover:text-red-800"
                   >
-                    Remove
+                    <Trash className="h-4 w-4" />
                   </button>
                 </li>
               ))}

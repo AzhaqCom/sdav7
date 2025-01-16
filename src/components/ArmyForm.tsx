@@ -5,7 +5,7 @@ interface ArmyRules {
   description: string;
 }
 export function ArmyForm() {
-  const [name, setName] = useState('');
+  
   const [formData, setFormData] = useState({
     name: '',
     armyRules: [] as ArmyRules[],
@@ -45,7 +45,7 @@ export function ArmyForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="armyName" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="armyName" className="block text-sm font-medium text-gray-700 dark:text-white">
           Nom d'armée
         </label>
         <input
@@ -53,17 +53,17 @@ export function ArmyForm() {
           id="armyName"
           value={formData.name}
           onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
           required
         />
              {/* armyrule*/}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-medium">regle d'arme</h3>
+          <h3 className="text-lg font-medium dark:text-white">Regle d'arme</h3>
           <button
             type="button"
             onClick={addArmyRules}
-            className="text-sm text-blue-600 hover:text-blue-800"
+            className="text-sm text-blue-600 hover:text-blue-800 dark:text-white"
           >
            Ajouter une règle d'armée
           </button>
@@ -78,7 +78,7 @@ export function ArmyForm() {
                 newActions[index] = { ...action, name: e.target.value };
                 setFormData(prev => ({ ...prev, armyRules: newActions }));
               }}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
               placeholder="Action name"
             />
             <textarea
@@ -88,7 +88,7 @@ export function ArmyForm() {
                 newActions[index] = { ...action, description: e.target.value };
                 setFormData(prev => ({ ...prev, armyRules: newActions }));
               }}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:bg-gray-700"
               placeholder="Action description"
               rows={2}
             />

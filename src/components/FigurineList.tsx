@@ -78,7 +78,7 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+    <div className="bg-white dark:bg-gray-800 py-4 px-3 rounded-lg shadow">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold dark:text-white">Figurines Sélectionnées</h2>
       </div>
@@ -215,70 +215,68 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
               )}
 
 
+              {figurine.selectedUpgrades && figurine.selectedUpgrades.length > 0 && (
+                <div className="mt-4">
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-white mb-2">Options</h4>
+                  <ul className="space-y-2">
+                    {figurine.selectedUpgrades.map((upgrade, upgradeIndex) => (
+                      <li key={upgradeIndex} className="flex items-center space-x-3">
+                        <input
+                          type="checkbox"
+                          id={`upgrade-${upgradeIndex}`}
+                          checked={selectedOptions.includes(upgrade.id)}  // Vérifie si cette option est sélectionnée
+                          onChange={() => handleToggleOption(figurine.id, upgrade)} // Applique la sélection
+                          className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                        />
+                        <label htmlFor={`upgrade-${upgradeIndex}`} className="text-sm text-gray-700 dark:text-white">
+                          {upgrade.name} ({upgrade.points})pts
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
 
-
-{figurine.selectedUpgrades && figurine.selectedUpgrades.length > 0 && (
-  <div className="mt-4">
-    <h4 className="text-sm font-medium text-gray-700 dark:text-white mb-2">Options</h4>
-    <ul className="space-y-2">
-      {figurine.selectedUpgrades.map((upgrade, upgradeIndex) => (
-        <li key={upgradeIndex} className="flex items-center space-x-3">
-          <input
-            type="checkbox"
-            id={`upgrade-${upgradeIndex}`}
-            checked={selectedOptions.includes(upgrade.id)}  // Vérifie si cette option est sélectionnée
-            onChange={() => handleToggleOption(figurine.id, upgrade)} // Applique la sélection
-            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-          />
-          <label htmlFor={`upgrade-${upgradeIndex}`} className="text-sm text-gray-700 dark:text-white">
-            {upgrade.name} ({upgrade.points})pts
-          </label>
-        </li>
-      ))}
-    </ul>
-
-    {/* Options sélectionnées */}
-    {selectedOptions.length > 0 && figurine.selectedUpgrades.some(upgrade => selectedOptions.includes(upgrade.id) && upgrade.type_id !== 1) && (
-      <div className="mt-6 border-t pt-4">
-        <h5 className="text-sm font-medium text-gray-700 dark:text-white mb-2">Options sélectionnées</h5>
-        <ul className="space-y-2">
-          {figurine.selectedUpgrades
-            .filter(upgrade => selectedOptions.includes(upgrade.id) && upgrade.type_id !== 1)  // Filtrer celles avec type_id !== 1
-            .map((upgrade, upgradeIndex) => (
-              <li key={upgradeIndex}>
-                <button
-                  onClick={() => toggleExpand(index, `upgrade-${upgradeIndex}`)}
-                  className="w-full text-left"
-                >
-                  <div className="flex items-center justify-between text-sm text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-gray-100">
-                    <span>{upgrade.name} ({upgrade.points})pts</span>
-                    {expandedItems[`${index}-upgrade-${upgradeIndex}`] ? (
-                      <ChevronUp className="h-4 w-4" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                  </div>
-                </button>
-                {expandedItems[`${index}-upgrade-${upgradeIndex}`] && (
-                  <div className="mt-1">
-                    {upgrade.type_id === 2 && upgrade.stats_json ? (
-                      // Afficher le tableau de statistiques
-                      <StatsTable stats={upgrade.stats_json} />
-                    ) : upgrade.type_id === 3 && upgrade.rule_description ? (
-                      // Afficher le paragraphe
-                      <p className="text-sm text-gray-600 dark:text-white pl-4">
-                        {upgrade.rule_description}
-                      </p>
-                    ) : null}
-                  </div>
-                )}
-              </li>
-            ))}
-        </ul>
-      </div>
-    )}
-  </div>
-)}
+                  {/* Options sélectionnées */}
+                  {selectedOptions.length > 0 && figurine.selectedUpgrades.some(upgrade => selectedOptions.includes(upgrade.id) && upgrade.type_id !== 1) && (
+                    <div className="mt-6 border-t pt-4">
+                      <h5 className="text-sm font-medium text-gray-700 dark:text-white mb-2">Options sélectionnées</h5>
+                      <ul className="space-y-2">
+                        {figurine.selectedUpgrades
+                          .filter(upgrade => selectedOptions.includes(upgrade.id) && upgrade.type_id !== 1)  // Filtrer celles avec type_id !== 1
+                          .map((upgrade, upgradeIndex) => (
+                            <li key={upgradeIndex}>
+                              <button
+                                onClick={() => toggleExpand(index, `upgrade-${upgradeIndex}`)}
+                                className="w-full text-left"
+                              >
+                                <div className="flex items-center justify-between text-sm text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-gray-100">
+                                  <span>{upgrade.name} ({upgrade.points})pts</span>
+                                  {expandedItems[`${index}-upgrade-${upgradeIndex}`] ? (
+                                    <ChevronUp className="h-4 w-4" />
+                                  ) : (
+                                    <ChevronDown className="h-4 w-4" />
+                                  )}
+                                </div>
+                              </button>
+                              {expandedItems[`${index}-upgrade-${upgradeIndex}`] && (
+                                <div className="mt-1">
+                                  {upgrade.type_id === 2 && upgrade.stats_json ? (
+                                    // Afficher le tableau de statistiques
+                                    <StatsTable stats={upgrade.stats_json} />
+                                  ) : upgrade.type_id === 3 && upgrade.rule_description ? (
+                                    // Afficher le paragraphe
+                                    <p className="text-sm text-gray-600 dark:text-white pl-4">
+                                      {upgrade.rule_description}
+                                    </p>
+                                  ) : null}
+                                </div>
+                              )}
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
 
 
 

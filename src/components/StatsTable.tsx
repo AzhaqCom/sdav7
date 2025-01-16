@@ -13,11 +13,11 @@ export function StatsTable({ stats, onStatChange, isEditable = false }: StatsTab
   
   const renderStatCell = (stat: keyof Pick<Stats, 'defense' |'power' | 'vitality' | 'destiny' | 'life'>) => {
     if (!isEditable) {
-      return <td className="px-2 py-1 text-center dark:text-gray-200">{stats[stat]}</td>;
+      return <td className="px-1 py-1 text-center dark:text-gray-200">{stats[stat]}</td>;
     }
 
     return (
-      <td className="px-2 py-1 text-center">
+      <td className="px-1 py-1 text-center">
         <div className="flex items-center justify-center">
           <button
             onClick={() => onStatChange?.(stat, (stats[stat] as number) - 1)}
@@ -39,7 +39,7 @@ export function StatsTable({ stats, onStatChange, isEditable = false }: StatsTab
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 -mx-4">
       <table className="min-w-full text-sm">
         <thead>
           <tr className="border-b dark:border-gray-600">
@@ -70,10 +70,10 @@ export function StatsTable({ stats, onStatChange, isEditable = false }: StatsTab
       <table className="min-w-full text-sm">
         <thead>
           <tr className="border-b dark:border-gray-600">
-            <th className="px-2 py-1 text-gray-600 dark:text-white">P</th>
-            <th className="px-2 py-1 text-gray-600 dark:text-white">V</th>
-            <th className="px-2 py-1 text-gray-600 dark:text-white">D</th>
-            <th className="px-2 py-1 text-gray-600 dark:text-white">PV</th>
+            <th className="px-1 py-1 text-gray-600 dark:text-white">P</th>
+            <th className="px-1 py-1 text-gray-600 dark:text-white">V</th>
+            <th className="px-1 py-1 text-gray-600 dark:text-white">D</th>
+            <th className="px-1 py-1 text-gray-600 dark:text-white">PV</th>
           </tr>
         </thead>
         <tbody>

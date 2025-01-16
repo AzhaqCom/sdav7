@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
 import { GameInterface } from './pages/GameInterface';
 import { AdminInterface } from './pages/AdminInterface';
+import { Rule } from './pages/Rule';
 
 function App() {
   return (
@@ -10,8 +11,9 @@ function App() {
         <Navigation />
         <main className="dark:bg-gray-900 mx-auto px-4 py-8">
           <Routes>
-            <Route path="/" element={<GameInterface />} />
-            <Route path="/admin" element={<AdminInterface />} />
+            <Route path="/sdav7/" element={<GameInterface />} />
+            <Route path="/sdav7/admin" element={<AdminInterface />} />
+            <Route path="/sdav7/rule" element={<Rule />} />
           </Routes>
         </main>
       </div>
