@@ -4,6 +4,7 @@ import { Army, Figurine, SelectedFigurine } from '@/types';
 import { ArmySelector } from '@/components/ArmySelector';
 import { FigurineSelector } from '@/components/FigurineSelector';
 import { FigurineList } from '@/components/FigurineList';
+import { Stats } from '@/types/gameStats';
 
 export function GameInterface() {
   const [armies, setArmies] = useState<Army[]>([]);
@@ -13,7 +14,7 @@ export function GameInterface() {
     const saved = localStorage.getItem('selectedFigurines');
     return saved ? JSON.parse(saved) : [];
   });
-  const [modifiedStats, setModifiedStats] = useState<Record<number, { defense: number,power: number, vitality: number, destiny: number, life:number }>>(() => {
+  const [modifiedStats, setModifiedStats] = useState<Record<number, Partial<Stats>>>(() => {
     const saved = localStorage.getItem('modifiedStats');
     return saved ? JSON.parse(saved) : {};
   });
@@ -64,7 +65,7 @@ export function GameInterface() {
   async function fetchUpgrades(figurineId: number) {
     const { data, error } = await supabase
       .from('upgrades')
-      .select('id, figurine_id, name, type_id, points, stats_json, rule_description')
+      .select('id, figurine_id, name, type_id, points, stats_json, rule_description,modified_stat, modification_value')
       .eq('figurine_id', figurineId); // Filtrer par figurine_id
   
     if (error) {

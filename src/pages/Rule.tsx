@@ -9,7 +9,7 @@ export function Rule() {
                 <ul className="list-disc pl-6">
                     <li>
                         <a
-                            href="src/pdf/rules.pdf"
+                            href="/pdf/rules.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="dark:text-white hover:underline"
@@ -19,7 +19,7 @@ export function Rule() {
                     </li>
                     <li>
                         <a
-                            href="src/pdf/army-hobbit.pdf"
+                            href="/pdf/army-hobbit.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="dark:text-white hover:underline"
@@ -29,7 +29,7 @@ export function Rule() {
                     </li>
                     <li>
                         <a
-                            href="src/pdf/army-me.pdf"
+                            href="/pdf/army-me.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="dark:text-white hover:underline"

@@ -4,7 +4,7 @@ import { Army, UpgradeType } from '@/types';
 import { Stats } from '@/types/gameStats';
 import { StatsInput } from './FigurineForm/StatsInput';
 import { UpgradeInput } from './FigurineForm/UpgradeInput';
-import {Trash } from 'lucide-react';
+import { Trash } from 'lucide-react';
 
 interface HeroicAction {
   id: number;
@@ -30,6 +30,7 @@ interface FigurineUpgrade {
 }
 
 export function FigurineForm() {
+  const [isHero, setIsHero] = useState(false);
   const [armies, setArmies] = useState<Army[]>([]);
   const [actions, setActions] = useState<HeroicAction[]>([]);
   const [upgradeTypes, setUpgradeTypes] = useState<UpgradeType[]>([]);
@@ -132,7 +133,22 @@ export function FigurineForm() {
       upgrades: [...prev.upgrades, upgrade]
     }));
   };
-
+  const handleHeroCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsHero(e.target.checked);
+    if (!e.target.checked) {
+      // Réinitialiser les stats des héros si ce n'est pas un héros
+      setFormData((prev) => ({
+        ...prev,
+        stats: {
+          ...prev.stats,
+          power: 0,
+          vitality: 0,
+          destiny: 0,
+        },
+        heroicActions: [],
+      }));
+    }
+  };
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus('loading');
@@ -256,12 +272,26 @@ export function FigurineForm() {
           min="0"
         />
       </div>
-
+      {/* Hero Checkbox */}
+      <div>
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={isHero}
+            onChange={handleHeroCheckbox}
+            className="rounded border-gray-300 text-blue-600 shadow-sm focus:ring focus:ring-blue-200"
+          />
+          <span className="text-sm font-medium text-gray-700 dark:text-white">Héros</span>
+        </label>
+      </div>
       <StatsInput
         stats={formData.stats}
         onChange={(stats) => setFormData(prev => ({ ...prev, stats }))}
+        hideHeroStats={!isHero} 
       />
-      <div>
+      
+      {isHero && (
+        <div>
         <h3 className="text-lg font-medium mb-4 dark:text-white text-gray-700">Actions héroïques</h3>
         <ul className="list-none space-y-2">
           {actions.map((action) => (
@@ -294,6 +324,7 @@ export function FigurineForm() {
           ))}
         </ul>
       </div>
+        )}
       {/* Equipment section */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">

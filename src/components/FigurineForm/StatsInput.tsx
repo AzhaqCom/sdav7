@@ -4,9 +4,10 @@ import { Stats } from '@/types/gameStats';
 interface StatsInputProps {
   stats: Stats;
   onChange: (stats: Stats) => void;
+  hideHeroStats?: boolean;
 }
 
-export function StatsInput({ stats, onChange }: StatsInputProps) {
+export function StatsInput({ stats, onChange, hideHeroStats = false }: StatsInputProps) {
   return (
     <div>
       <h3 className="text-lg font-medium mb-4 dark:text-white text-gray-700">Stats</h3>
@@ -86,6 +87,8 @@ export function StatsInput({ stats, onChange }: StatsInputProps) {
             placeholder="5+"
           />
         </div>
+        {!hideHeroStats && (
+          <>
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-white">P</label>
           <input
@@ -113,6 +116,8 @@ export function StatsInput({ stats, onChange }: StatsInputProps) {
             className="mt-1 block w-full rounded-md border-gray-300 dark:text-white dark:bg-gray-700 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
+        </>
+        )}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-white">PV</label>
           <input

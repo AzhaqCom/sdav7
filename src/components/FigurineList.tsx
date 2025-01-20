@@ -3,19 +3,21 @@ import { FigurineUpgrade, SelectedFigurine } from '@/types';
 import { StatsTable } from './StatsTable';
 import { ChevronDown, ChevronUp, Trash } from 'lucide-react';
 import { Stats } from '@/types/gameStats';
+import { ArmyRulesModal } from './ArmyRulesModal';
 
 interface FigurineListProps {
   figurines: SelectedFigurine[];
   onRemove: (index: number) => void;
-  modifiedStats: Record<number, { defense: number, power: number, vitality: number, destiny: number, life: number }>;
-  setModifiedStats: React.Dispatch<React.SetStateAction<Record<number, {
-    defense: number; power: number, vitality: number, destiny: number, life: number
-  }>>>;
+  modifiedStats: Record<number, Partial<Stats>>;
+  setModifiedStats: React.Dispatch<React.SetStateAction<Record<number, Partial<Stats>>>>;
 }
 
 export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedStats }: FigurineListProps) {
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedArmyName, setSelectedArmyName] = useState('');
+
   const toggleExpand = (index: number, type: string) => {
     const key = `${index}-${type}`;
     setExpandedItems(prev => ({
@@ -43,40 +45,54 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
       destiny: modified.destiny ?? figurine.stats.destiny,
       life: modified.life ?? figurine.stats.life,
       defense: modified.defense ?? figurine.stats.defense
-
     };
   };
+
+  const handleArmyNameClick = (armyName: string) => {
+    setSelectedArmyName(armyName);
+    setModalOpen(true);
+  };
+
   function handleToggleOption(figurineId: number, upgrade: FigurineUpgrade) {
+
     setModifiedStats(prev => {
-      // Récupère les stats actuelles de la figurine
       const currentStats = prev[figurineId] || {};
-      const baseDefense = figurines.find(fig => fig.id === figurineId)?.stats.defense || 0;
-
-      if (upgrade.type_id === 1) { // Type spécifique pour la défense
-        const isActive = selectedOptions.includes(upgrade.id);
-
-        return {
-          ...prev,
-          [figurineId]: {
-            ...currentStats,
-            defense: isActive
-              ? (currentStats.defense ?? baseDefense) - 1 // Désélection : retire +1
-              : (currentStats.defense ?? baseDefense) + 1, // Sélection : ajoute +1
-          },
-        };
+      const baseFigurine = figurines.find(fig => fig.id === figurineId);
+  
+      if (!baseFigurine) return prev;
+      if (upgrade.type_id === 1) {
+        if (upgrade.modified_stat && upgrade.modification_value !== undefined) {
+       
+          const statKey = upgrade.modified_stat as keyof Stats;
+          const baseValue = baseFigurine.stats[statKey];
+          const isActive = selectedOptions.includes(upgrade.id);
+          const modValue = upgrade.modification_value;
+  
+          if (typeof baseValue === 'number') {
+            const newValue = isActive
+              ? baseValue // Revenir à la valeur de base si l'option est désactivée
+              : baseValue + modValue; // Appliquer la modification si l'option est activée
+  
+            return {
+              ...prev,
+              [figurineId]: {
+                ...currentStats,
+                [statKey]: newValue,
+              },
+            };
+          }
+        } 
       }
-
-      return prev; // Aucun changement si ce n'est pas une upgrade de défense
+  
+      return prev;
     });
-
-    // Met à jour les options sélectionnées
+  
     setSelectedOptions(prev =>
       prev.includes(upgrade.id)
-        ? prev.filter(id => id !== upgrade.id) // Supprime si déjà sélectionné
-        : [...prev, upgrade.id] // Ajoute si non sélectionné
+        ? prev.filter(id => id !== upgrade.id)
+        : [...prev, upgrade.id]
     );
   }
-
   return (
     <div className="bg-white dark:bg-gray-800 py-4 px-3 rounded-lg shadow">
       <div className="flex justify-between items-center mb-4">
@@ -92,7 +108,12 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <h3 className="font-medium dark:text-white">{figurine.name}</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{figurine.armyName}</p>
+                  <button
+                    onClick={() => handleArmyNameClick(figurine.armyName)}
+                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                  >
+                    {figurine.armyName}
+                  </button>
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm font-medium dark:text-gray-200">{figurine.points} pts</span>
@@ -118,7 +139,7 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
                   <h4 className="text-sm font-medium text-gray-700 dark:text-white mb-2">Équipement</h4>
                   <ul className="space-y-2">
                     {figurine.equipment.map((equip, equipIndex) => (
-                      equip.description && equip.description.trim() !== "" ? ( // Vérifie si la description existe et n'est pas vide
+                      equip.description && equip.description.trim() !== "" ? (
                         <li key={equipIndex}>
                           <button
                             onClick={() => toggleExpand(index, `equipment-${equipIndex}`)}
@@ -148,9 +169,6 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
                   </ul>
                 </div>
               )}
-
-
-
 
               {/* Actions Héroïques Section */}
               {figurine.heroicActionsNames && figurine.heroicActionsNames.length > 0 && (
@@ -186,7 +204,7 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
               {/* Règles Spéciales Section */}
               {figurine.specialRules && figurine.specialRules.length > 0 && (
                 <div className="mt-4 border-b pb-4">
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-white mb-2 ">Règles Spéciales</h4>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-white mb-2">Règles Spéciales</h4>
                   <ul className="space-y-2">
                     {figurine.specialRules.map((rule, ruleIndex) => (
                       <li key={ruleIndex}>
@@ -214,7 +232,7 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
                 </div>
               )}
 
-
+              {/* Upgrades Section */}
               {figurine.selectedUpgrades && figurine.selectedUpgrades.length > 0 && (
                 <div className="mt-4">
                   <h4 className="text-sm font-medium text-gray-700 dark:text-white mb-2">Options</h4>
@@ -224,8 +242,8 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
                         <input
                           type="checkbox"
                           id={`upgrade-${upgradeIndex}`}
-                          checked={selectedOptions.includes(upgrade.id)}  // Vérifie si cette option est sélectionnée
-                          onChange={() => handleToggleOption(figurine.id, upgrade)} // Applique la sélection
+                          checked={selectedOptions.includes(upgrade.id)}
+                          onChange={() => handleToggleOption(figurine.id, upgrade)}
                           className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
                         />
                         <label htmlFor={`upgrade-${upgradeIndex}`} className="text-sm text-gray-700 dark:text-white">
@@ -235,13 +253,13 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
                     ))}
                   </ul>
 
-                  {/* Options sélectionnées */}
+                  {/* Selected Options */}
                   {selectedOptions.length > 0 && figurine.selectedUpgrades.some(upgrade => selectedOptions.includes(upgrade.id) && upgrade.type_id !== 1) && (
                     <div className="mt-6 border-t pt-4">
                       <h5 className="text-sm font-medium text-gray-700 dark:text-white mb-2">Options sélectionnées</h5>
                       <ul className="space-y-2">
                         {figurine.selectedUpgrades
-                          .filter(upgrade => selectedOptions.includes(upgrade.id) && upgrade.type_id !== 1)  // Filtrer celles avec type_id !== 1
+                          .filter(upgrade => selectedOptions.includes(upgrade.id) && upgrade.type_id !== 1)
                           .map((upgrade, upgradeIndex) => (
                             <li key={upgradeIndex}>
                               <button
@@ -260,10 +278,8 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
                               {expandedItems[`${index}-upgrade-${upgradeIndex}`] && (
                                 <div className="mt-1">
                                   {upgrade.type_id === 2 && upgrade.stats_json ? (
-                                    // Afficher le tableau de statistiques
                                     <StatsTable stats={upgrade.stats_json} />
                                   ) : upgrade.type_id === 3 && upgrade.rule_description ? (
-                                    // Afficher le paragraphe
                                     <p className="text-sm text-gray-600 dark:text-white pl-4">
                                       {upgrade.rule_description}
                                     </p>
@@ -277,14 +293,16 @@ export function FigurineList({ figurines, onRemove, modifiedStats, setModifiedSt
                   )}
                 </div>
               )}
-
-
-
-
             </div>
           ))}
         </div>
       )}
+
+      <ArmyRulesModal
+        armyName={selectedArmyName}
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </div>
   );
 }

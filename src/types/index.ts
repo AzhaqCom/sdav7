@@ -49,7 +49,8 @@ export interface FigurineUpgrade {
   type_id: number;
   points: number;
   stats_json?: Stats;
-  rule_description?: string;
+  rule_description?: string; modified_stat?: string;
+  modification_value?: number;
 }
 
 export interface SelectedFigurine extends Figurine {
